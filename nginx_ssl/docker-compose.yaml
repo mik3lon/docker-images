@@ -21,11 +21,13 @@ services:
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - DEFAULT_EMAIL=miguelgarciaponce85@gmail.com
-    volumes_from:
-      - nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme:/etc/acme.sh
+      - ./certs:/etc/nginx/certs
+      - ./vhostd:/etc/nginx/vhost.d/
+      - ./html:/usr/share/nginx/html
+
 volumes:
   certs:
   html:
