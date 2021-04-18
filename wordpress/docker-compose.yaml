@@ -1,25 +1,48 @@
-version: '3.1'
+version: '3'
 
 services:
-
-  wordpress:
-    image: wordpress:php7.1-apache
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
     ports:
-      - 80:80
-    environment:
-      WORDPRESS_DB_HOST: mysql
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: root
-      WORDPRESS_DB_NAME: wordpress
-    links:
-      - mysql:mysql
-
-
-  mysql:
-    image: mysql:8.0.13
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_ROOT_PASSWORD: root
+      - "80:80"
+      - "443:443"
     volumes:
-      - ~/docker/mysql-data:/var/lib/mysql
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
+
+  www:
+    image: nginx
+    restart: always
+    expose:
+      - "80"
+    volumes:
+      - /root/project/html:/usr/share/nginx/html:ro
+    environment:
+      - VIRTUAL_HOST=sixedges.solutions
+      - LETSENCRYPT_HOST=sixedges.solutions
+      - LETSENCRYPT_EMAIL=miguelgarciaponce85@gmail.com
+    depends_on:
+      - nginx-proxy
+      - letsencrypt
+volumes:
+  certs:
+  html:
+  vhostd:
+  acme:
