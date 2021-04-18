@@ -33,7 +33,6 @@ services:
     expose:
       - "80"
     volumes:
-      - vhostd:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html:ro
     environment:
       - VIRTUAL_HOST=sixedges.solutions
