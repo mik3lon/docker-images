@@ -39,9 +39,9 @@ services:
       - VIRTUAL_HOST=sixedges.solutions
       - LETSENCRYPT_HOST=sixedges.solutions
       - LETSENCRYPT_EMAIL=miguelgarciaponce85@gmail.com
-    depends_on:
-      - nginx-proxy
-      - letsencrypt
+#    depends_on:
+#      - nginx-proxy
+#      - letsencrypt
 volumes:
   certs:
   html:
