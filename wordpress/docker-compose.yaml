@@ -33,7 +33,7 @@ services:
     expose:
       - "80"
     volumes:
-      - /root/project/html:/usr/share/nginx/html:ro
+      - html:/usr/share/nginx/html:ro
     environment:
       - VIRTUAL_HOST=sixedges.solutions
       - LETSENCRYPT_HOST=sixedges.solutions
