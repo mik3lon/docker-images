@@ -23,9 +23,9 @@ services:
       - WORDPRESS_DB_USER=root
       - WORDPRESS_DB_PASSWORD=root
       - WORDPRESS_DB_NAME=wordpress
-      - VIRTUAL_HOST=sixedges.solutions
+      - VIRTUAL_HOST=mafenoboa.com
       #- VIRTUAL_PORT=8004
-      - LETSENCRYPT_HOST=sixedges.solutions
+      - LETSENCRYPT_HOST=mafenoboa.com
       - LETSENCRYPT_EMAIL=miguelgarciaponce85@gmail.com
     volumes:
       - ./wordpress:/var/www/html
